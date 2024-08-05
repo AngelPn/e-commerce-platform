@@ -17,3 +17,5 @@ This repository hosts the code for an E-Commerce Platform designed as a full-sta
 ## Tech Stach
 
 ## Getting Started
+
+- Start Container(s) with `docker-compose up -d`
