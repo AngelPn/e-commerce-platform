@@ -1,0 +1,29 @@
+name: Docker Compose Build
+
+on:
+  push:
+    branches:
+      - '**' # This will trigger the action on all branches
+
+jobs:
+  test_docker_compose:
+    name: Test Docker Compose Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+ 
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        dockerfile: Dockerfile  # Customize if your Dockerfile is in a subdirectory
+ 
+    - name: Build with Docker Compose
+      run: |
+        docker-compose --file docker-compose.yml build
+ 
+    - name: Test with Docker Compose
+      run: |
+        docker-compose --file docker-compose.yml up -d
+        docker-compose --file docker-compose.yml down --volumes
