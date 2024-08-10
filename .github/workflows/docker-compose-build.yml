@@ -21,7 +21,6 @@ jobs:
 
     - name: Login to GitHub Package Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin ghcr.io
-      if: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and run Docker Compose
       run: |
@@ -35,7 +34,7 @@ jobs:
  
     - name: Check Backend Service Status
       run: |
-        if jq -r '.status' "${{ steps.backend_status.outputs.status }}" != "UP"; then
+        if [ "${{ steps.backend_status.outputs.status }}" != "UP" ]; then
           echo "Backend service is not healthy."
           exit 1
         fi
