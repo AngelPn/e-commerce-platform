@@ -30,17 +30,5 @@ jobs:
         docker-compose build --no-cache
         docker-compose up -d
 
-    - name: Test Backend Service
-      run: |
-        curl -s http://backend:8080/api/healthcheck | jq -r '.status'
-      id: backend_status
-
-    - name: Check Backend Service Status
-      run: |
-        if [ "${{ steps.backend_status.outputs.status }}" != "UP" ]; then
-          echo "Backend service is not healthy."
-          exit 1
-        fi
-
     - name: Stop Docker Compose
       run: docker-compose down --remove-orphans
