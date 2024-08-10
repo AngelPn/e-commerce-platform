@@ -1,3 +1,10 @@
+name: Docker Compose Build
+
+on:
+  push:
+    branches:
+      - '**' # This will trigger the action on all branches
+
 jobs:
   test_docker_compose:
     name: Test Docker Compose Build
