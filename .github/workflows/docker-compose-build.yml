@@ -13,11 +13,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
- 
-    - name: Set up Docker
-      uses: docker/setup-docker-action@v2
-      with:
-        arch: amd64
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
     - name: Login to GitHub Package Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin ghcr.io
@@ -26,18 +24,18 @@ jobs:
       run: |
         docker-compose build --no-cache
         docker-compose up -d
- 
+
     - name: Test Backend Service
       run: |
         curl -s http://backend:8080/api/healthcheck | jq -r '.status'
       id: backend_status
- 
+
     - name: Check Backend Service Status
       run: |
         if [ "${{ steps.backend_status.outputs.status }}" != "UP" ]; then
           echo "Backend service is not healthy."
           exit 1
         fi
- 
+
     - name: Stop Docker Compose
       run: docker-compose down --remove-orphans
