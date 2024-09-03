@@ -1,11 +1,11 @@
 FROM node:18 AS build
-WORKDIR /frontend
-COPY package.json package-lock.json ./
-RUN npm ci
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
-FROM nginx:stable-alpine
+FROM nginx:alpine
 COPY --from=build /app/dist/ecommerce-platform/browser /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
